@@ -12,4 +12,10 @@ class HttpStreamClient:
     ) -> Iterator[str]:
         with self._client.stream("GET", url, params=params) as resp:
             for line in resp.iter_lines():
-                yield line
+                if not line or not line.strip():
+                    continue
+
+                if isinstance(line, bytes):
+                    line = line.decode("utf-8")
+
+                yield line.strip()
