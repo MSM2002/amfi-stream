@@ -18,6 +18,17 @@ SCHEME_MASTER_SCHEMA = pa.schema(
     ]
 )
 
+LATEST_NAV_SCHEMA = pa.schema(
+    [
+        ("Scheme Code", pa.uint32()),
+        ("ISIN Div Payout/ ISIN Growth", pa.string()),
+        ("ISIN Div Reinvestment", pa.string()),
+        ("Scheme Name", pa.string()),
+        ("Net Asset Value", pa.float64()),
+        ("Date", pa.date32()),
+    ]
+)
+
 MONTH_KEYS = pa.array(
     [
         "Jan",
@@ -95,4 +106,9 @@ def normalise_table(table, schema):
 
 def normalise_scheme_master(table: pa.Table) -> pa.Table:
     table = normalise_table(table, SCHEME_MASTER_SCHEMA)
+    return table
+
+
+def normalise_latest_nav(table: pa.Table) -> pa.Table:
+    table = normalise_table(table, LATEST_NAV_SCHEMA)
     return table
