@@ -13,7 +13,7 @@ def latest_nav_url() -> str:
     return LATEST_NAV_URL
 
 
-def nav_history_url(from_date: date, to_date: date) -> str:
+def historical_nav_url(from_date: date, to_date: date) -> str:
     return (
         f"{HISTORICAL_NAV_URL}"
         f"?fromDate={from_date.strftime('%d-%b-%Y')}"

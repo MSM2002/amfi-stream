@@ -19,4 +19,4 @@ class AMFIJob:
 class AMFIResult:
     scheme_master: pa.Table | None
     latest_nav: pa.Table | None
-    nav_history: pa.Table | None
+    historical_nav: pa.Table | None

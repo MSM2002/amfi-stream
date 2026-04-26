@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Protocol
 
-from amfi_stream.endpoints import nav_history_url
+from amfi_stream.endpoints import historical_nav_url
 
 
 class URLSource(Protocol):
@@ -16,7 +16,7 @@ class StaticURLSource:
         return [self.url]
 
 
-class NavHistorySource:
+class HistoricalNAVSource:
     def __init__(self, from_date: date, to_date: date):
         self.from_date = from_date
         self.to_date = to_date
@@ -24,7 +24,7 @@ class NavHistorySource:
     def __call__(self) -> list[str]:
         urls = []
         for f, t in self.chunker():
-            urls.append(nav_history_url(f, t))
+            urls.append(historical_nav_url(f, t))
         return urls
 
     def chunker(self): ...

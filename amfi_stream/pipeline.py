@@ -48,7 +48,7 @@ class AMFIPipeline:
         return AMFIResult(
             scheme_master=self._merge(grouped, "scheme_master"),
             latest_nav=self._merge(grouped, "latest_nav"),
-            nav_history=self._merge(grouped, "nav_history"),
+            historical_nav=self._merge(grouped, "historical_nav"),
         )
 
     def close(self) -> None:
