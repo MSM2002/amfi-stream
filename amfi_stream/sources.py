@@ -9,7 +9,7 @@ class URLSource(Protocol):
 
 
 class StaticURLSource:
-    def __init__(self, url: str):
+    def __init__(self, url: str) -> None:
         self.url = url
 
     def __call__(self) -> list[str]:

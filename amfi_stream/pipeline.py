@@ -14,6 +14,12 @@ class AMFIPipeline:
         self.executor = executor or ThreadPoolExecutor(max_workers=max_workers)
         self._owns_executor = executor is None
 
+    def _merge(self, grouped: dict[str, list[pa.Table]], name: str) -> pa.Table | None:
+        tables = grouped.get(name)
+        if not tables:
+            return None
+        return pa.concat_tables(tables, promote=True)
+
     def run(self, jobs: list[AMFIJob]) -> AMFIResult:
         futures = []
 
@@ -39,24 +45,18 @@ class AMFIPipeline:
 
             grouped.setdefault(job.name, []).append(clean_table)
 
-        def merge(name: str):
-            tables = grouped.get(name)
-            if not tables:
-                return None
-            return pa.concat_tables(tables, promote=True)
-
         return AMFIResult(
-            scheme_master=merge("scheme_master"),
-            latest_nav=merge("latest_nav"),
-            nav_history=merge("nav_history"),
+            scheme_master=self._merge(grouped, "scheme_master"),
+            latest_nav=self._merge(grouped, "latest_nav"),
+            nav_history=self._merge(grouped, "nav_history"),
         )
 
-    def close(self):
+    def close(self) -> None:
         if self._owns_executor:
             self.executor.shutdown(wait=True)
 
-    def __enter__(self):
+    def __enter__(self) -> "AMFIPipeline":
         return self
 
-    def __exit__(self, exc_type, exc, tb):
+    def __exit__(self, exc_type, exc, tb) -> None:
         self.close()

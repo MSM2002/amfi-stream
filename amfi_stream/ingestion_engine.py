@@ -1,3 +1,4 @@
+from collections.abc import Iterator
 from io import BytesIO
 
 import fsspec
@@ -6,10 +7,12 @@ import pyarrow.csv as pv
 
 
 class AMFIIngestionEngine:
-    def __init__(self):
+    def __init__(self) -> None:
         self.fs = fsspec.filesystem("http")
 
-    def _sanitize(self, stream, delimiter: bytes, expected_cols: int):
+    def _sanitize(
+        self, stream, delimiter: bytes, expected_cols: int
+    ) -> Iterator[bytes]:
         buffer = b""
         for chunk in stream:
             buffer += chunk
