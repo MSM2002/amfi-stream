@@ -17,9 +17,9 @@ class StaticURLSource:
 
 
 class HistoricalNAVSource:
-    def __init__(self, from_date: date, to_date: date):
+    def __init__(self, from_date: date, to_date: date | None = None):
         self.from_date = from_date
-        self.to_date = to_date
+        self.to_date = to_date or from_date
 
     def __call__(self) -> list[str]:
         urls = []
