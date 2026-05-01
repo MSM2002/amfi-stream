@@ -18,7 +18,7 @@ class AMFIPipeline:
         tables = grouped.get(name)
         if not tables:
             return None
-        return pa.concat_tables(tables, promote=True)
+        return pa.concat_tables(tables, promote_options="default")
 
     def run(self, jobs: list[AMFIJob]) -> AMFIResult:
         futures = []
