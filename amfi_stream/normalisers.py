@@ -29,6 +29,19 @@ LATEST_NAV_SCHEMA = pa.schema(
     ]
 )
 
+HISTORICAL_NAV_SCHEMA = pa.schema(
+    [
+        ("Scheme Code", pa.uint32()),
+        ("Scheme Name", pa.string()),
+        ("ISIN Div Payout/ISIN Growth", pa.string()),
+        ("ISIN Div Reinvestment", pa.string()),
+        ("Net Asset Value", pa.float64()),
+        ("Repurchase Price", pa.float64()),
+        ("Sale Price", pa.float64()),
+        ("Date", pa.date32()),
+    ]
+)
+
 MONTH_KEYS = pa.array(
     [
         "Jan",
@@ -111,4 +124,9 @@ def normalise_scheme_master(table: pa.Table) -> pa.Table:
 
 def normalise_latest_nav(table: pa.Table) -> pa.Table:
     table = normalise_table(table, LATEST_NAV_SCHEMA)
+    return table
+
+
+def normalise_historical_nav(table: pa.Table) -> pa.Table:
+    table = normalise_table(table, HISTORICAL_NAV_SCHEMA)
     return table
