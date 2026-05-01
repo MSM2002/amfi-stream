@@ -1,5 +1,6 @@
 from datetime import date
 
+from amfi_stream.date_parser import DateParser
 from amfi_stream.endpoints import latest_nav_url, scheme_master_url
 from amfi_stream.models import AMFIJob
 from amfi_stream.normalisers import (
@@ -30,8 +31,11 @@ def stream_latest_nav() -> AMFIJob:
     )
 
 
-def stream_historical_nav(from_date: date, to_date: date | None = None) -> AMFIJob:
-    to_date = to_date or from_date
+def stream_historical_nav(
+    from_date: date | str, to_date: date | str | None = None
+) -> AMFIJob:
+    from_date = DateParser.parse(from_date)
+    to_date = DateParser.parse(to_date) if to_date else from_date
     return AMFIJob(
         name="historical_nav",
         urls_source=HistoricalNAVSource(from_date, to_date),
