@@ -2,8 +2,12 @@ from datetime import date
 
 from amfi_stream.endpoints import latest_nav_url, scheme_master_url
 from amfi_stream.models import AMFIJob
-from amfi_stream.normalisers import normalise_latest_nav, normalise_scheme_master
-from amfi_stream.sources import StaticURLSource
+from amfi_stream.normalisers import (
+    normalise_historical_nav,
+    normalise_latest_nav,
+    normalise_scheme_master,
+)
+from amfi_stream.sources import HistoricalNAVSource, StaticURLSource
 
 
 def stream_scheme_master() -> AMFIJob:
@@ -26,4 +30,12 @@ def stream_latest_nav() -> AMFIJob:
     )
 
 
-def stream_historical_nav(from_date: date, to_date: date | None = None) -> AMFIJob: ...
+def stream_historical_nav(from_date: date, to_date: date | None = None) -> AMFIJob:
+    to_date = to_date or from_date
+    return AMFIJob(
+        name="historical_nav",
+        urls_source=HistoricalNAVSource(from_date, to_date),
+        response_delimiter=";",
+        response_col_count=8,
+        normaliser=normalise_historical_nav,
+    )
