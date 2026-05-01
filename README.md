@@ -75,11 +75,12 @@ amfi-stream is a streaming ingestion and normalization layer, not a data API wra
 ## Quick start
 
 ```python
-from amfi_stream import AMFIPipeline, stream_latest_nav, stream_scheme_master
+from amfi_stream import AMFIPipeline, stream_latest_nav, stream_scheme_master, stream_historical_nav
 
 jobs = [
     stream_scheme_master(),
     stream_latest_nav(),
+    stream_historical_nav("1-May-2025", "1-May-2026")
 ]
 
 with AMFIPipeline(max_workers=4) as pipeline:
@@ -95,9 +96,9 @@ All outputs are returned as PyArrow tables:
 
 ```python
 AMFIResult(
-    scheme_master=pa.Table,
-    latest_nav=pa.Table,
-    historical_nav=None  # coming soon
+    scheme_master=pa.Table | None,
+    latest_nav=pa.Table | None,
+    historical_nav=pa.Table | None,
 )
 ```
 ---
@@ -108,11 +109,11 @@ URL Sources → Streaming Engine → Sanitizer → CSV Parser → Arrow Tables �
 
 ---
 
-## Roadmap
+## Coming Soon
 
-- Scheme Master ingestion
-- Latest NAV ingestion
-- Historical NAV ingestion
+We are introducing an enhanced output schema that extends raw AMFI NAV data with additional derived, analytics-ready columns.
+
+These improvements will provide a more structured and computation-friendly dataset on top of the standard AMFI format, reducing the need for post-processing in downstream tools and improving compatibility with analytical workflows in Arrow-native environments. 
 
 ---
 
@@ -123,18 +124,6 @@ URL Sources → Streaming Engine → Sanitizer → CSV Parser → Arrow Tables �
 - Apache Arrow as canonical format
 - Minimal dependencies
 - Deterministic, reproducible pipelines
-
----
-
-## Historical NAV (coming soon)
-
-Historical NAV ingestion is the next planned feature.
-
-It will enable:
-- Date-range based ingestion from AMFI
-- Chunked streaming over large time windows
-- Unified output with latest NAV schema
-- Full time-series dataset construction
 
 ---
 
