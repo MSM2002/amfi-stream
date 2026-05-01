@@ -13,10 +13,9 @@ def latest_nav_url() -> str:
     return LATEST_NAV_URL
 
 
-def historical_nav_url(from_date: date, to_date: date | None = None) -> str:
-    to_date = to_date or from_date
+def historical_nav_url(from_date: date, to_date: date) -> str:
     return (
         f"{HISTORICAL_NAV_URL}"
-        f"?fromDate={from_date.strftime('%d-%b-%Y')}"
-        f"&toDate={to_date.strftime('%d-%b-%Y')}"
+        f"?frmdt={from_date.strftime('%d-%b-%Y')}"
+        f"&todt={to_date.strftime('%d-%b-%Y')}"
     )
