@@ -8,8 +8,25 @@ and this project adheres to Semantic Versioning.
 ## [Unreleased]
 
 ### Added
-- Add helper function to change case of table columns. 
+- 
 
+### Changed
+- 
+
+### Depricated
+- 
+
+### Removed
+- 
+
+### Fixed
+- 
+
+---
+
+## [0.3.0] - 2026-05-03
+### Added
+- Add helper function to change case of table columns. 
 ---
 
 ## [0.2.0] - 2026-05-01

@@ -1,32 +1,27 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = [ "setuptools>=68", "wheel",]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "amfi-stream"
-version = "0.2.0"
+version = "0.3.0"
 description = "Streaming ingestion pipeline for AMFI NAV and scheme master data"
 readme = "README.md"
 requires-python = ">=3.10"
-authors = [{ name = "Satya M" }]
-
-dependencies = [
-    "pyarrow>=8",
-    "fsspec>=2021.7.0"
-]
+dependencies = [ "pyarrow>=8", "fsspec>=2021.7.0",]
+[[project.authors]]
+name = "Satya M"
 
 [project.optional-dependencies]
-dev = [
-    "pytest",
-]
+dev = [ "pytest",]
 
-[tool.setuptools]
-package-dir = {"" = "."}
-
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["amfi_stream*"]
+[tool.setuptools.package-dir]
+"" = "."
 
 [tool.pytest.ini_options]
-pythonpath = ["."]
-testpaths = ["tests"]
+pythonpath = [ ".",]
+testpaths = [ "tests",]
+
+[tool.setuptools.packages.find]
+where = [ ".",]
+include = [ "amfi_stream*",]
