@@ -33,7 +33,7 @@ def update_version_files(version):
             content = f.read()
         new_content = re.sub(
             r'__version__\s*=\s*".*?"', f'__version__ = "{version}"', content
-        )toml.dump(py_data, f)
+        )
         with open(init_path, "w") as f:
             f.write(new_content)
     else:
