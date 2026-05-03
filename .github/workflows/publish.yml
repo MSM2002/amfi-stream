@@ -69,3 +69,37 @@ jobs:
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+
+  create-release:
+    needs: build-and-publish
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract Release Notes
+        run: |
+          VERSION="${GITHUB_REF_NAME}"
+
+          awk "/^## \[$VERSION\]/ {flag=1; next} /^## \[/ {flag=0} flag" CHANGELOG.md > RELEASE_BODY.md
+
+          if [ ! -s RELEASE_BODY.md ]; then
+            echo "No changelog entry found for $VERSION"
+            exit 1
+          fi
+
+          echo "## What's changed" > FINAL_BODY.md
+          cat RELEASE_BODY.md >> FINAL_BODY.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          body_path: FINAL_BODY.md
+          files: dist/*
+          fail_on_unmatched_files: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
